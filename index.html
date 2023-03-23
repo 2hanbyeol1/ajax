@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <title>WEB1 - Welcome</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="fetch-master/fetch.js"></script>
+</head>
+<body>
+  <h1><a href="index.html">WEB</a></h1>
+  <ol id="nav">
+
+  </ol>
+  <article>
+
+  </article>
+</body>
+</html>
+<script>
+  function fetchPage(fileName) {
+    fetch(fileName).then(function(response){
+      response.text().then(function(text){
+        const article = document.querySelector('article');
+        article.innerHTML = text;
+        article.id = fileName;
+      });
+    })
+  }
+
+  if(location.hash) fetchPage(location.hash.substr(2));
+  else fetchPage('welcome');
+
+  fetch("list").then(function(response){
+    response.text().then(function(text) {
+      const items = text.split(",");
+      let html = "";
+      for(let i = 0; i < items.length; i++) {
+        const item = items[i].trim();
+        html +=
+                "<li><a href=#!" + item
+                + " onClick=fetchPage('" + item + "')>"
+                + item + "</a></li>";
+        document.querySelector('#nav').innerHTML = html;
+      }
+    });
+  })
+</script>
